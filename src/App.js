@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import DismissableNotification from './DismissableNotification';
 import ExtremeClickingImageLabeler from './ExtremeClickingImageLabeler';
 
 import './App.css';
@@ -22,14 +23,16 @@ class App extends Component {
     });
   }
 
-  handleKeyDown = (e) => {
-
-  }
-
   render() {
     return (
       <div className="App">
         <div>
+          <DismissableNotification message="Got it!">
+            Extreme clicking is a method of bounding box annotation that is done by having the annotator
+            click on four points to label a rectangle: the topmost, leftmost, rightmost, and bottommost
+            point of every object to be labeled. Try picking out a piece of fruit and clicking on the top,
+            left, bottom, and right points to draw a bounding box around it.
+          </DismissableNotification>
           <ExtremeClickingImageLabeler
             height={this.state.height}
             width={this.state.width}
