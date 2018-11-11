@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import BoundingBoxInfo from './BoundingBoxInfo';
+
 import './ExtremeClickingImageLabeler.css';
 
 export default class ExtremeClickingImageLabeler extends Component {
@@ -31,8 +33,16 @@ export default class ExtremeClickingImageLabeler extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.height !== prevProps.height || this.props.width !== prevProps.width) {
+    if (
+      this.props.height !== prevProps.height ||
+      this.props.width !== prevProps.width
+    ) {
       this.handleImageLoad();
+    }
+    if (this.state.boxes !== prevState.boxes) {
+      if (this.props.onUpdate) {
+        this.props.onUpdate(this.state.boxes);
+      }
     }
   }
 
@@ -55,9 +65,8 @@ export default class ExtremeClickingImageLabeler extends Component {
   }
 
   onClick = (e) => {
-    const rect = this.refs.image.getBoundingClientRect();
     const S = this.state.imageScaling;
-    const { left, top } = rect;
+    const { left, top } = this.refs.image.getBoundingClientRect();
     const nextPoint = {
       x: (e.clientX - left) * S,
       y: (e.clientY - top) * S,
@@ -67,8 +76,8 @@ export default class ExtremeClickingImageLabeler extends Component {
     currentBox.push(nextPoint);
 
     if (currentBox.length === 4) {
-      const xs = currentBox.map(p => p.x);
-      const ys = currentBox.map(p => p.y);
+      const xs = currentBox.map(p => Math.round(p.x));
+      const ys = currentBox.map(p => Math.round(p.y));
       const nextBox = {
         top: Math.min(...ys),
         bottom: Math.max(...ys),
@@ -112,6 +121,10 @@ export default class ExtremeClickingImageLabeler extends Component {
       left: (p.x / S) - D / 2,
       height: D,
       width: D,
+      boxSizing: 'border-box',
+      borderStyle: 'solid',
+      borderColor: this.props.dotBorderColor,
+      borderWidth: this.props.dotBorderWidth,
       borderRadius: D / 2,
       backgroundColor: this.props.dotColor,
     };
@@ -134,7 +147,12 @@ export default class ExtremeClickingImageLabeler extends Component {
     const S = this.state.imageScaling;
     return (
       <div
-        style={{position: 'relative'}}
+        className="ExtremeClickingImageLabeler"
+        style={{
+          position: 'relative',
+          height: this.props.height,
+          width: this.props.width,
+        }}
         onClick={this.onClick}
         >
         { this.state.imageLoaded && (
@@ -167,6 +185,13 @@ export default class ExtremeClickingImageLabeler extends Component {
             />
           ))
         }
+        <div className="ExtremeClickingImageLabeler--side-menu">
+        {
+          this.state.boxes.map((box, i) => (
+            <BoundingBoxInfo box={box} />
+          ))
+        }
+        </div>
       </div>
     );
   }
@@ -174,8 +199,10 @@ export default class ExtremeClickingImageLabeler extends Component {
 
 ExtremeClickingImageLabeler.defaultProps = {
   imageSrc: null,
-  dotSize: 6,
+  dotSize: 10,
   dotColor: 'white',
+  dotBorderWidth: 1,
+  dotBorderColor: '#333333',
   boxColor: 'rgba(255,255,255,0.3)',
   height: 600,
   width: 800,
