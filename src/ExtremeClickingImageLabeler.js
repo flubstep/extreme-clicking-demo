@@ -14,13 +14,7 @@ export default class ExtremeClickingImageLabeler extends Component {
       imageDimensions: null,
       imageScaling: null,
       currentBox: [],
-      boxes: [{
-        boxId: 'default',
-        top: 5,
-        left: 5,
-        right: 500,
-        bottom: 500,
-      }],
+      boxes: [],
     };
     window.addEventListener('keydown', this.handleKeyDown);
   }
