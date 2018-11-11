@@ -81,7 +81,7 @@ export default class ExtremeClickingImageLabeler extends Component {
       height: D,
       width: D,
       borderRadius: D / 2,
-      backgroundColor: 'white',
+      backgroundColor: this.props.dotColor,
     };
   }
 
@@ -94,7 +94,7 @@ export default class ExtremeClickingImageLabeler extends Component {
       height: (b.bottom - b.top) / S,
       width: (b.right - b.left) / S,
       position: 'absolute',
-      backgroundColor: 'rgba(255, 255, 255, 0.5)'
+      backgroundColor: this.props.boxColor,
     };
   }
 
@@ -141,6 +141,8 @@ export default class ExtremeClickingImageLabeler extends Component {
 ExtremeClickingImageLabeler.defaultProps = {
   imageSrc: null,
   dotSize: 6,
+  dotColor: 'white',
+  boxColor: 'rgba(255,255,255,0.3)',
   height: 600,
   width: 800,
   onUpdate: null,
