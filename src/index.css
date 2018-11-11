@@ -18,10 +18,12 @@ code {
 }
 
 .btn {
-    padding: 5px 10px;
-    background-color: rgba(255,0,0,0.1);
+    padding: 10px 20px;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    transition: all 100ms ease-in-out;
 }
 
 .btn:hover {
-    background-color: rgba(255,0,0,0.2);
+    background-color: rgba(0,0,255,0.15);
 }

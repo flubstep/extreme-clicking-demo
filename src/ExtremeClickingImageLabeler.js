@@ -66,12 +66,17 @@ export default class ExtremeClickingImageLabeler extends Component {
   }
 
   onClick = (e) => {
+    const dims = this.state.imageDimensions;
     const S = this.state.imageScaling;
     const { left, top } = this.refs.image.getBoundingClientRect();
     const nextPoint = {
       x: (e.clientX - left) * S,
       y: (e.clientY - top) * S,
     };
+
+    if (nextPoint.x > dims.naturalWidth || nextPoint.y > dims.naturalHeight) {
+      return;
+    }
 
     var { currentBox, boxes } = this.state;
     currentBox.push(nextPoint);
