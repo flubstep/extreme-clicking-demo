@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import ExtremeClickingImageLabeler from './ExtremeClickingImageLabeler';
 
 import './App.css';

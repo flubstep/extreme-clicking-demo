@@ -31,6 +31,22 @@
     font-weight: 500;
 }
 
+.BoundingBoxInfo .info-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #cccccc;
+}
+
+.BoundingBoxInfo .info-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.BoundingBoxInfo .info-expanded-container {
+
+}
+
 .BoundingBoxInfo .info-expanded-container {
     margin-top: 10px;
     padding-top: 10px;

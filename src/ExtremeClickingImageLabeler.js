@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import _ from 'lodash';
 import BoundingBoxInfo from './BoundingBoxInfo';
 
 import './ExtremeClickingImageLabeler.css';
@@ -13,7 +14,13 @@ export default class ExtremeClickingImageLabeler extends Component {
       imageDimensions: null,
       imageScaling: null,
       currentBox: [],
-      boxes: [],
+      boxes: [{
+        boxId: 'default',
+        top: 5,
+        left: 5,
+        right: 500,
+        bottom: 500,
+      }],
     };
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -79,6 +86,7 @@ export default class ExtremeClickingImageLabeler extends Component {
       const xs = currentBox.map(p => Math.round(p.x));
       const ys = currentBox.map(p => Math.round(p.y));
       const nextBox = {
+        boxId: _.uniqueId(),
         top: Math.min(...ys),
         bottom: Math.max(...ys),
         left: Math.min(...xs),
@@ -106,6 +114,14 @@ export default class ExtremeClickingImageLabeler extends Component {
         boxes: boxes
       });
     }
+  }
+
+  handleDeleteBox = (e, toDelete) => {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({
+      boxes: this.state.boxes.filter(b => b.boxId !== toDelete.boxId)
+    });
   }
 
   clearCurrentSelection = () => {
@@ -180,7 +196,7 @@ export default class ExtremeClickingImageLabeler extends Component {
           this.state.boxes.map((box, i) => (
             <div
               className="ExtremeClickingImageLabeler--bounding-box"
-              key={'box' + i + 'S' + S}
+              key={'box' + box.boxId}
               style={this.calculateBoxStyle(box)}
             />
           ))
@@ -188,7 +204,11 @@ export default class ExtremeClickingImageLabeler extends Component {
         <div className="ExtremeClickingImageLabeler--side-menu">
         {
           this.state.boxes.map((box, i) => (
-            <BoundingBoxInfo box={box} />
+            <BoundingBoxInfo
+              key={'info' + box.boxId}
+              box={box}
+              onDelete={(e) => this.handleDeleteBox(e, box)}
+            />
           ))
         }
         </div>
