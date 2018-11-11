@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import './ExtremeClickingImageLabeler.css';
 
 export default class ExtremeClickingImageLabeler extends Component {
 
@@ -11,6 +13,7 @@ export default class ExtremeClickingImageLabeler extends Component {
       currentBox: [],
       boxes: [],
     };
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentDidMount() {
@@ -30,6 +33,16 @@ export default class ExtremeClickingImageLabeler extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.height !== prevProps.height || this.props.width !== prevProps.width) {
       this.handleImageLoad();
+    }
+  }
+
+  handleKeyDown = (e) => {
+    if (e.code === 'Backspace') {
+      e.preventDefault();
+      this.deleteLast();
+    } else if (e.code === 'Escape') {
+      e.preventDefault();
+      this.clearCurrentSelection();
     }
   }
 
@@ -69,6 +82,25 @@ export default class ExtremeClickingImageLabeler extends Component {
       currentBox: currentBox,
       boxes: boxes,
     });
+  }
+
+  deleteLast = () => {
+    const { currentBox, boxes } = this.state;
+    if (currentBox.length > 0) {
+      currentBox.pop();
+      this.setState({
+        currentBox: currentBox
+      });
+    } else if (boxes.length > 0) {
+      boxes.pop();
+      this.setState({
+        boxes: boxes
+      });
+    }
+  }
+
+  clearCurrentSelection = () => {
+    this.setState({ currentBox: [] });
   }
 
   calculatePointStyle = (p) => {
@@ -121,6 +153,7 @@ export default class ExtremeClickingImageLabeler extends Component {
         )}
         { this.state.currentBox.map((point, i) => (
           <div
+            className="ExtremeClickingImageLabeler--point"
             key={i + '-' + point.x + '-' + point.y + 'S' + S}
             style={this.calculatePointStyle(point)}
           />
@@ -128,6 +161,7 @@ export default class ExtremeClickingImageLabeler extends Component {
         {
           this.state.boxes.map((box, i) => (
             <div
+              className="ExtremeClickingImageLabeler--bounding-box"
               key={'box' + i + 'S' + S}
               style={this.calculateBoxStyle(box)}
             />

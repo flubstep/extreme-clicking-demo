@@ -8,20 +8,21 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      height: 600,
-      width: 800,
+      height: window.innerHeight,
+      width: window.innerWidth,
     };
-    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  handleResize = () => {
+    this.setState({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
   }
 
   handleKeyDown = (e) => {
-    if (e.key === '1') {
-      this.setState({ height: 600, width: 800 });
-    } else if (e.key === '2') {
-      this.setState({ height: 800, width: 1000 });
-    } else if (e.key === '3') {
-      this.setState({ height: 1000, width: 1200 });
-    }
+
   }
 
   render() {

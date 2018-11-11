@@ -1,0 +1,17 @@
+.ExtremeClickingImageLabeler--bounding-box {
+    animation: scale-up-partial 25ms ease-in;
+}
+
+.ExtremeClickingImageLabeler--point {
+    animation: scale-up 50ms ease-in;
+}
+
+@keyframes scale-up {
+    0% { transform: scale(0.01); }
+    100% { transform: scale(1.0); }
+}
+
+@keyframes scale-up-partial {
+    0% { transform: scale(0.75); }
+    100% { transform: scale(1.0); }
+}
